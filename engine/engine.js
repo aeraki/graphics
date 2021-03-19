@@ -78,7 +78,7 @@ function keyboardDebugger(x, y, color='black') {
 function showFps(color=black) {
 	CTX.font = '14px arial';
 	CTX.fillStyle = color;
-	CTX.fillText(fpsaverage,2,HEIGHT-7)
+	CTX.fillText(fpsaverage+'fps',2,HEIGHT-7)
 };
 setInterval(function() {
 	fpsaverage = countfps;

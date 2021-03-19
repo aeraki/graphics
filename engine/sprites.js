@@ -34,7 +34,7 @@ function Sprite(src, x, y, w, h, tags=[]) {
 		CTX.drawImage(this.image, this.sheetrow*this.w, this.sheetcol*this.h, this.w, this.h, this.x, this.y, this.w, this.h);
 		if (COLLISIONDEBUGTOOL) {
 			CTX.fillStyle = 'rgb(255,0,0,0.20)';
-			if (this.tags.includes(COLLISIONSOLIDTAG)) {ctx.fillStyle = 'rgb(0,255,0,0.20)';};
+			if (this.tags.includes(COLLISIONSOLIDTAG)) {CTX.fillStyle = 'rgb(0,255,0,0.20)';};
 			CTX.fillRect(this.boxsize.x+this.x, this.boxsize.y+this.y, this.boxsize.w, this.boxsize.h);
 		};
 	};

@@ -14,11 +14,11 @@ dungeontiles[3].tags = ['solid'];
 var Scene1 = new Environment([
 	new TileMap(dungeontiles, [
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-		[0,3,2,2,2,2,2,2,2,2,2,2,3,0],
-		[0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-		[0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-		[0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-		[0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+		[0,3,2,2,2,3,2,2,3,2,2,2,3,0],
+		[0,1,1,1,1,1,1,1,1,1,1,1,1,2,0],
+		[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+		[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+		[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
 		[0,1,1,1,1,1,1,1,1,1,1,1,1,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 	])//,
@@ -37,10 +37,10 @@ redwizard.boxsize = {
 };
 
 // Initiates the Keys Used
-keyPressed('ArrowDown');
 keyPressed('ArrowUp');
-keyPressed('ArrowRight');
+keyPressed('ArrowDown');
 keyPressed('ArrowLeft');
+keyPressed('ArrowRight');
 
 function _draw() {
 	// Draw Environment
