@@ -1,22 +1,38 @@
-const canvas = document.getElementById('canvas');
-const width = canvas.width = window.innerWidth - 15;
-const height = canvas.height = window.innerHeight - 15;
-const ctx = canvas.getContext('2d');
+const CANVAS = document.getElementById('canvas');
+const CTX = CANVAS.getContext('2d');
+var WIDTH = CANVAS.width = window.innerWidth - 15;
+var HEIGHT = CANVAS.height = window.innerHeight - 15;
 
 // Collision Debugging
 var COLLISIONDEBUGTOOL = false;
 var COLLISIONSOLIDTAG = 'solid';
 // Tileset Debugging
-var TILESETDEBUGTOOL = true;
+var TILESETDEBUGTOOL = false;
+
+var fpsaverage = 0;
+var countfps = 0;
 
 // Canvas Base Graphics
 function clear(color) {
 	if (color === undefined) { color = 'white' };
-	ctx.fillStyle = color;
-	ctx.fillRect(0, 0, width, height);
+	CTX.fillStyle = color;
+	CTX.fillRect(0, 0, WIDTH, HEIGHT);
 };
-function line(x, y, color, width=1) {
+function line(x1, y1, x2, y2, color, width=2) {
+	CTX.strokeStyle = color;
+	CTX.lineWidth = width;
+	CTX.beginPath();
+	CTX.moveTo(x1, y1);
+	CTX.lineTo(x2, y2);
+	CTX.stroke();
+};
 
+// Change Canvas Size
+function changeCanvasSize(w, h) {
+	if (w === undefined) { w = window.innerWidth - 15};
+	if (h === undefined) { h = window.innerHeight - 15};
+	WIDTH = CANVAS.width = w;
+	HEIGHT = CANVAS.height = h;
 };
 
 // Copy Function because F&ck pointers.
@@ -45,14 +61,44 @@ function keyPressed (keyid) {
 		});
 	};
 };
+// Draws Debug Tool on Screen
 function keyboardDebugger(x, y, color='black') {
 	if (x === undefined) {x = y = 0};
-	ctx.font = '14px arial';
+	CTX.font = '14px arial';
 	for (let i=0; i<Object.keys(keyboard).length; i++) {
-		ctx.fillStyle = color;
+		CTX.fillStyle = color;
 		if ( keyboard[ Object.keys(keyboard)[i] ]) {
-			ctx.fillStyle = 'green';
+			CTX.fillStyle = 'green';
 		};
-		ctx.fillText(Object.keys(keyboard)[i], x, y+15+(20*i))
+		CTX.fillText(Object.keys(keyboard)[i], x, y+15+(20*i))
 	};
 };
+
+// Draws FPS to bottom-left
+function showFps(color=black) {
+	CTX.font = '14px arial';
+	CTX.fillStyle = color;
+	CTX.fillText(fpsaverage,2,HEIGHT-7)
+};
+setInterval(function() {
+	fpsaverage = countfps;
+	countfps = 0;
+}, 1000);
+
+// Sets up the _update and _draw functions.
+var _draw = undefined;
+var _update = undefined;
+
+function ___CANVASUPDATE() {
+	if (_draw !== undefined) {_draw()};
+	countfps++;
+	requestAnimationFrame(___CANVASUPDATE);
+};
+
+___CANVASUPDATE();
+
+setInterval( function() {
+	if (_update !== undefined) {_update()};
+	updframe++;
+	if(updframe>999){updframe=0};
+}, 1000/60);

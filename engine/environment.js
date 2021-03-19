@@ -7,7 +7,7 @@ function Environment(objects, backgroundColor='white') {
 		if (this.backgroundColor !== undefined) {
 			clear(this.backgroundColor);
 		};
-		for (let i=0; i< objects.length; i++) {
+		for (let i=0; i<objects.length; i++) {
 			objects[i].draw();
 		};
 	};
@@ -29,12 +29,14 @@ function Tileset(src, tilewidth, tileheight, tilesx, tilesy, padding=0) {
 	this.tilesy = tilesy;
 
 	// Convert All Tiles to Sprites
-	for (let y=0; y<tilesy; y++) {
-		for (let x=0; x<tilesx; x++) {
+	let tilecount = 0;
+	for (let y=0; y<this.tilesy; y++) {
+		for (let x=0; x<this.tilesx; x++) {
 			let spr = new Sprite(this.image.src, 0, 0, this.tilewidth, this.tileheight);
 			spr.sheetrow = x;
 			spr.sheetcol = y;
-			this[ y*x + x ] = spr;
+			this[ tilecount ] = spr;
+			tilecount++;
 		};
 	};
 
@@ -71,7 +73,12 @@ function TileMap(tileset, layout, x=0, y=0) {
 			};
 		};
 		if (TILESETDEBUGTOOL) {
-
+			for (let dy=0; dy<Math.ceil(HEIGHT/this.tileset.tileheight); dy++) {
+				line(0, dy*this.tileset.tileheight, WIDTH, dy*this.tileset.tileheight, '#88888833');
+			};
+			for (let dx=0; dx<Math.floor(WIDTH/this.tileset.tilewidth); dx++) {
+				line(dx*this.tileset.tilewidth, 0, dx*this.tileset.tilewidth, HEIGHT, '#88888833');
+			};
 		};
 	};
 

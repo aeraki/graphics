@@ -1,53 +1,73 @@
-var frame = 0;
+// Add One Every _update()
+var updframe = 0;
 
-var dungeontiles = new Tileset('./sprites/Tiles.png', 80, 80, 4, 1);
+// Set Canvas Size
+changeCanvasSize(14*80, 8*80)
+
+// Tileset, with 2 Tiles Solid
+var dungeontiles = new Tileset('./sprites/Tiles.png', 80, 80, 2, 2);
+dungeontiles[0].tags = ['solid'];
 dungeontiles[2].tags = ['solid'];
 dungeontiles[3].tags = ['solid'];
 
-var CURRENTENVIRONMENT = new Environment([
+// Creates the scene
+var Scene1 = new Environment([
 	new TileMap(dungeontiles, [
-		[3, 2, 3],
-		[1, 1, 1],
-		[1, 1, 1]
-	], x=720),
-	new Sprite('./sprites/block.png', 400, 400, 80, 80, tags=['solid'])
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+		[0,3,2,2,2,2,2,2,2,2,2,2,3,0],
+		[0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+		[0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+		[0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+		[0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+		[0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+		[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+	])//,
+	//new Sprite('./sprites/block.png', 400, 400, 80, 80, tags=['solid'])
 ], backgroundColor='#333c57');
 
-let redwizard = new Sprite('./sprites/redwizard.png', 160, 120, 80, 80);
-redwizard.speed = 2;
+CURRENTENVIRONMENT = Scene1
+
+// Create the Player
+var redwizard = new Sprite('./sprites/redwizard.png', 160, 120, 80, 80);
+redwizard.speed = 4;
 redwizard.movement = true;
 redwizard.boxsize = {
-	x: 0, y: 50,
-	w: 80, h: 30
+	x: 10, y: 50,
+	w: 60, h: 30
 };
 
+// Initiates the Keys Used
 keyPressed('ArrowDown');
 keyPressed('ArrowUp');
 keyPressed('ArrowRight');
 keyPressed('ArrowLeft');
 
-function _update() {
+function _draw() {
 	// Draw Environment
 	clear();
 	CURRENTENVIRONMENT.draw();
 
 	// Draw Title Text
-	ctx.strokeStyle = 'white';
-	ctx.lineWidth = 1;
-	ctx.font = '30px arial';
-	ctx.strokeText('Canvas Graphics & Collision Test', 5, 30);
-	ctx.strokeText('by Ben Aeraki', 5, 60);
+	/*
+	CTX.strokeStyle = 'white';
+	CTX.lineWidth = 1;
+	CTX.font = '30px arial';
+	CTX.strokeText('Canvas Graphics & Collision Test', 5, 30);
+	CTX.strokeText('by Ben Aeraki', 5, 60);*/
 
 	// Player
+	redwizard.draw();
+
+	// Debug Tools
+	keyboardDebugger(5, 5, color='white');
+	showFps(color='white');
+
+};
+
+function _update() {
+
 	redwizard.keyboardMovement();
 	if (keyPressed('ArrowLeft')) { redwizard.sheetcol = 1 };
 	if (keyPressed('ArrowRight')) { redwizard.sheetcol = 0 };
-	redwizard.draw();
-	keyboardDebugger(20, 80, color='white');
 
-	// Continue
-	frame++;if(frame>999){frame=0};
-	requestAnimationFrame(_update);
 };
-  
-_update();

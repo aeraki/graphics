@@ -31,11 +31,11 @@ function Sprite(src, x, y, w, h, tags=[]) {
 
 	// Draw Sprite on Canvas
 	this.draw = function() {
-		ctx.drawImage(this.image, this.sheetrow*this.w, this.sheetcol*this.h, this.w, this.h, this.x, this.y, this.w, this.h);
+		CTX.drawImage(this.image, this.sheetrow*this.w, this.sheetcol*this.h, this.w, this.h, this.x, this.y, this.w, this.h);
 		if (COLLISIONDEBUGTOOL) {
-			ctx.fillStyle = 'rgb(255,0,0,0.20)';
+			CTX.fillStyle = 'rgb(255,0,0,0.20)';
 			if (this.tags.includes(COLLISIONSOLIDTAG)) {ctx.fillStyle = 'rgb(0,255,0,0.20)';};
-			ctx.fillRect(this.boxsize.x+this.x, this.boxsize.y+this.y, this.boxsize.w, this.boxsize.h);
+			CTX.fillRect(this.boxsize.x+this.x, this.boxsize.y+this.y, this.boxsize.w, this.boxsize.h);
 		};
 	};
 
@@ -114,18 +114,4 @@ function Sprite(src, x, y, w, h, tags=[]) {
 		};
 	};
 
-};
-
-function Player(sprite) {
-	console.log(sprite);
-	// Import From Sprite
-	this.x = sprite.x;
-	this.y = sprite.y;
-	this.w = sprite.w;
-	this.h = sprite.h;
-	this.tags = sprite.tags;
-	// Import Sprite
-	this.sprite = sprite;
-
-	this.draw = this.sprite.draw;
 };
