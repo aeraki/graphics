@@ -5,10 +5,29 @@ var updframe = 0;
 changeCanvasSize(14*80, 8*80)
 
 // Tileset, with 2 Tiles Solid
-var dungeontiles = new Tileset('./sprites/Tiles.png', 80, 80, 2, 2);
+var dungeontiles = new Tileset('./sprites/Tiles.png', 80, 80, 3, 2);
 dungeontiles[0].tags = ['solid'];
 dungeontiles[2].tags = ['solid'];
 dungeontiles[3].tags = ['solid'];
+
+dungeontiles[3].animations['flicker'] = {
+	0: (self) => {
+		self.sheetrow++;
+	},
+	1: (self) => {
+		self.sheetrow++;
+	},
+	2: (self) => {
+		self.sheetrow--;
+	},
+	3: (self) => {
+		self.sheetrow--;
+	},
+	frames: 4,
+	loop: true,
+	fps: 4
+};
+dungeontiles[3].defaultanimation = 'flicker';
 
 // Creates the scene
 var Scene1 = new Environment([
@@ -25,16 +44,28 @@ var Scene1 = new Environment([
 	//new Sprite('./sprites/block.png', 400, 400, 80, 80, tags=['solid'])
 ], backgroundColor='#333c57');
 
-CURRENTENVIRONMENT = Scene1
+CURRENTENVIRONMENT = Scene1;
 
 // Create the Player
 var redwizard = new Sprite('./sprites/redwizard.png', 160, 120, 80, 80);
-redwizard.speed = 4;
+redwizard.speed = 6;
 redwizard.movement = true;
 redwizard.boxsize = {
 	x: 10, y: 50,
 	w: 60, h: 30
 };
+redwizard.animations['idle'] = 	{
+	0: () => {
+		redwizard.sheetrow++;
+	},
+	1: () => {
+		redwizard.sheetrow--;
+	},
+	frames: 2,
+	loop: true,
+	fps: 3
+};
+redwizard.defaultanimation = 'idle';
 
 // Initiates the Keys Used
 keyPressed('ArrowUp');

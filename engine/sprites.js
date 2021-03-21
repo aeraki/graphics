@@ -1,4 +1,4 @@
-function Sprite(src, x, y, w, h, tags=[]) {
+function Sprite(src, x, y, w, h, tags=[], animations={}) {
 
 	this.type = 'Sprite';
 
@@ -36,6 +36,9 @@ function Sprite(src, x, y, w, h, tags=[]) {
 			CTX.fillStyle = 'rgb(255,0,0,0.20)';
 			if (this.tags.includes(COLLISIONSOLIDTAG)) {CTX.fillStyle = 'rgb(0,255,0,0.20)';};
 			CTX.fillRect(this.boxsize.x+this.x, this.boxsize.y+this.y, this.boxsize.w, this.boxsize.h);
+		};
+		if (this.currentanimation === undefined && this.defaultanimation !== undefined) {
+			this.playAnimation(this.defaultanimation);
 		};
 	};
 
@@ -113,5 +116,50 @@ function Sprite(src, x, y, w, h, tags=[]) {
 			};
 		};
 	};
+
+	// Animations
+	this.animations = {
+		/*'default': {
+			frames: 2,
+			0: () => {
+				this.sheetrow++;
+			},
+			1: () => {
+				this.sheetrow--;
+			},
+			loop: true,
+			fps: 3
+		}*/
+	};
+	
+	this.currentanimation = undefined;
+	this.defaultanimation = undefined;
+	this.animationframe = 0;
+
+	this.animationplayer;
+
+	this.playAnimation = function (id) {
+		console.log('Played Animation: ' + id);
+		//clearInterval(this.animationplayer);
+		this.currentanimation = id;
+		this.animationframe = 0;
+
+		this.animationplayer = setInterval((
+			function(self) { return function() {
+				let ani = self.animations[ self.currentanimation ];
+				ani[ self.animationframe ](self);
+				self.animationframe++;
+
+				if (self.animationframe >= ani.frames) {
+					if (ani.loop === true) {
+						self.animationframe = 0 
+					} else {
+						clearInterval(self.animationplayer);
+					};
+				};
+			}
+		})(this) , 1000/this.animations[id].fps);
+	};
+
 
 };
