@@ -55,11 +55,11 @@ redwizard.boxsize = {
 	w: 60, h: 30
 };
 redwizard.animations['idle'] = 	{
-	0: () => {
-		redwizard.sheetrow++;
+	0: (self) => {
+		self.sheetrow++;
 	},
-	1: () => {
-		redwizard.sheetrow--;
+	1: (self) => {
+		self.sheetrow--;
 	},
 	frames: 2,
 	loop: true,
@@ -67,11 +67,16 @@ redwizard.animations['idle'] = 	{
 };
 redwizard.defaultanimation = 'idle';
 
+// Create the Gate
+var gate = new Sprite('./sprites/Gate.png', 0, 165, 80, 320);
+
 // Initiates the Keys Used
 keyPressed('ArrowUp');
 keyPressed('ArrowDown');
 keyPressed('ArrowLeft');
 keyPressed('ArrowRight');
+
+var health = 100;
 
 function _draw() {
 	// Draw Environment
@@ -86,12 +91,21 @@ function _draw() {
 	CTX.strokeText('Canvas Graphics & Collision Test', 5, 30);
 	CTX.strokeText('by Ben Aeraki', 5, 60);*/
 
-	// Player
+	// Draw Sprites
 	redwizard.draw();
+	gate.draw();
+
+	CTX.strokeStyle = '#333c57'
+	CTX.fillStyle = '#bc4258';
+	CTX.lineWidth = 5;
+	CTX.font = ' 30px Tahoma';
+	CTX.fillText('HEALTH: ', 30, 48);
+	CTX.fillRect(170, 22, 2*health, 30);
+	CTX.strokeRect(170, 22, 200, 30);
 
 	// Debug Tools
-	keyboardDebugger(5, 5, color='white');
-	showFps(color='white');
+	//keyboardDebugger(5, 5, color='white');
+	showFps(color='#257179');
 
 };
 

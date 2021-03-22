@@ -112,7 +112,9 @@ function Sprite(src, x, y, w, h, tags=[], animations={}) {
 		for (let i=0; i<this.keyboardMovementMap.length; i++) {
 			let map = this.keyboardMovementMap[i];
 			if ( keyPressed(map[0]) ) {
-				this.moveDirection(this.speed*map[1], this.speed*map[2]);
+				for (let s=0; s<this.speed; s++) {
+					this.moveDirection(map[1], map[2]);
+				};
 			};
 		};
 	};
