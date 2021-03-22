@@ -47,7 +47,7 @@ var Scene1 = new Environment([
 CURRENTENVIRONMENT = Scene1;
 
 // Create the Player
-var redwizard = new Sprite('./sprites/redwizard.png', 160, 120, 80, 80);
+var redwizard = new Sprite('./sprites/redwizard.png', 240, 320, 80, 80);
 redwizard.speed = 6;
 redwizard.movement = true;
 redwizard.boxsize = {
@@ -76,43 +76,46 @@ keyPressed('ArrowDown');
 keyPressed('ArrowLeft');
 keyPressed('ArrowRight');
 
+// Basic Stats
 var health = 100;
+var level = 1;
 
-function _draw() {
-	// Draw Environment
-	clear();
-	CURRENTENVIRONMENT.draw();
-
-	// Draw Title Text
-	/*
-	CTX.strokeStyle = 'white';
-	CTX.lineWidth = 1;
-	CTX.font = '30px arial';
-	CTX.strokeText('Canvas Graphics & Collision Test', 5, 30);
-	CTX.strokeText('by Ben Aeraki', 5, 60);*/
-
-	// Draw Sprites
-	redwizard.draw();
-	gate.draw();
-
-	CTX.strokeStyle = '#333c57'
-	CTX.fillStyle = '#bc4258';
-	CTX.lineWidth = 5;
-	CTX.font = ' 30px Tahoma';
-	CTX.fillText('HEALTH: ', 30, 48);
-	CTX.fillRect(170, 22, 2*health, 30);
-	CTX.strokeRect(170, 22, 200, 30);
-
-	// Debug Tools
-	//keyboardDebugger(5, 5, color='white');
-	showFps(color='#257179');
-
+// Create Enemies
+var enemytypes = {};
+enemytypes['slime_blue'] = new Sprite('./sprites/Enemies.png', 800, 240, 80, 80);
+enemytypes['slime_blue'].animations['idle'] = {
+	0: (self) => {
+		self.sheetrow++;
+	},
+	1: (self) => {
+		self.sheetrow--;
+	},
+	frames: 2,
+	loop: true,
+	fps: 4
 };
+enemytypes['slime_blue'].defaultanimation = 'idle';
 
-function _update() {
-
-	redwizard.keyboardMovement();
-	if (keyPressed('ArrowLeft')) { redwizard.sheetcol = 1 };
-	if (keyPressed('ArrowRight')) { redwizard.sheetcol = 0 };
-
+enemytypes['snake_green'] = new Sprite('./sprites/Enemies.png', 800, 400, 80, 80);
+enemytypes['snake_green'].sheetcol = 1;
+enemytypes['snake_green'].animations['idle'] = {
+	0: (self) => {
+		self.sheetrow++;
+	},
+	1: (self) => {
+		self.sheetrow--;
+	},
+	frames: 2,
+	loop: true,
+	fps: 6
 };
+enemytypes['snake_green'].defaultanimation = 'idle';
+
+
+// Level Outline
+var levels = [
+	// Level 1
+	{
+		enemies: []
+	}
+];

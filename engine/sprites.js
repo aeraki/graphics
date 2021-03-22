@@ -1,4 +1,4 @@
-function Sprite(src, x, y, w, h, tags=[], animations={}) {
+function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 
 	this.type = 'Sprite';
 
@@ -17,8 +17,8 @@ function Sprite(src, x, y, w, h, tags=[], animations={}) {
 	this.tags = tags;
 
 	// Spritesheet
-	this.sheetrow = 0;
-	this.sheetcol = 0;
+	this.sheetrow = sheetrow;
+	this.sheetcol = sheetcol;
 
 	// Collision Box
 	this.boxsize = {
@@ -141,7 +141,7 @@ function Sprite(src, x, y, w, h, tags=[], animations={}) {
 	this.animationplayer;
 
 	this.playAnimation = function (id) {
-		console.log('Played Animation: ' + id);
+		//console.log('Played Animation: ' + id);
 		//clearInterval(this.animationplayer);
 		this.currentanimation = id;
 		this.animationframe = 0;
