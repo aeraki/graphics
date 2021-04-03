@@ -122,49 +122,12 @@ var gate = new Sprite('./sprites/Gate.png', 0, 165, 80, 320);
 var hplabel = new Sprite('./sprites/HP.png', 70, 14, 90, 48);
 
 // Basic Stats
+var maxhealth = 100;
 var health = 100;
 var level = 1;
 var projectiles = [];
 
-// Create Enemies
-var enemytypes = {};
-enemytypes['slime_blue'] = new Sprite('./sprites/Enemies.png', 800, 240, 80, 80, tags=['enemy']);
-enemytypes['slime_blue'].boxsize = {
-	x: 0, y: 20,
-	w: 80, h: 50
-};
-enemytypes['slime_blue'].animations['idle'] = {
-	0: (self) => {
-		self.sheetrow++;
-	},
-	1: (self) => {
-		self.sheetrow--;
-	},
-	frames: 2,
-	loop: true,
-	fps: 4
-};
-enemytypes['slime_blue'].defaultanimation = 'idle';
-
-enemytypes['snake_green'] = new Sprite('./sprites/Enemies.png', 800, 400, 80, 80, tags=['enemy']);
-enemytypes['snake_green'].sheetcol = 1;
-enemytypes['snake_green'].boxsize = {
-	x: 0, y: 20,
-	w: 80, h: 45
-};
-enemytypes['snake_green'].animations['idle'] = {
-	0: (self) => {
-		self.sheetrow++;
-	},
-	1: (self) => {
-		self.sheetrow--;
-	},
-	frames: 2,
-	loop: true,
-	fps: 6
-};
-enemytypes['snake_green'].defaultanimation = 'idle';
-
+var enemiesactive = [];
 
 // Level Outline
 var levels = [

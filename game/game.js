@@ -11,15 +11,20 @@ function draw_game() {
 	clear();
 	CURRENTENVIRONMENT.draw();
 
+	// Draw Enemies
+	for (let i=0; i<enemiesactive.length; i++) {
+		enemiesactive[i].draw();
+	};
+
 	// Draw Sprites
-	enemytypes['slime_blue'].draw();
-	enemytypes['snake_green'].draw();
 	redwizard.draw();
 	gate.draw();
 
+	// Draw Projectiles
 	for (let i=0; i<projectiles.length; i++) {
 		projectiles[i].draw();
 	};
+
 
 	// Healthbar
 	CTX.fillStyle = '#333c57';
@@ -60,9 +65,20 @@ function update_game() {
 		};
 	};
 
-	for (let i=0; )
+	for (let i=0; i<enemiesactive.length; i++) {
+		for (let s=0; s<enemiesactive[i].speed; s++) {
+			enemiesactive[i].moveDirection(-1, 0);
+		};
+	};
 
 };
+
+// Startup Enemies
+
+enemiesactive = [
+	copy( enemytypes.slime_blue ),
+	copy( enemytypes.snake_green )
+]
 
 // Start Game
 _update = update_game;
