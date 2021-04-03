@@ -142,7 +142,12 @@ function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 
 	this.playAnimation = function (id) {
 		//console.log('Played Animation: ' + id);
-		//clearInterval(this.animationplayer);
+
+		if (this.currentanimation === id) {
+			return false;
+		};
+
+		clearInterval(this.animationplayer);
 		this.currentanimation = id;
 		this.animationframe = 0;
 
@@ -150,12 +155,16 @@ function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 			function(self) { return function() {
 				let ani = self.animations[ self.currentanimation ];
 				ani[ self.animationframe ](self);
+				if (self.secretval === 'redwizard') {
+					console.log('Row: '+self.sheetrow+'; Col: '+self.sheetcol+'; Loop: '+ani.loop);
+				};
 				self.animationframe++;
 
 				if (self.animationframe >= ani.frames) {
 					if (ani.loop === true) {
 						self.animationframe = 0 
 					} else {
+						self.currentanimation = undefined;
 						clearInterval(self.animationplayer);
 					};
 				};

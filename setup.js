@@ -1,8 +1,5 @@
-// Add One Every _update()
-var updframe = 0;
-
 // Set Canvas Size
-changeCanvasSize(14*80, 8*80)
+changeCanvasSize(14*80, 8*80);
 
 // Tileset, with 2 Tiles Solid
 var dungeontiles = new Tileset('./sprites/Tiles.png', 80, 80, 3, 2);
@@ -25,7 +22,7 @@ dungeontiles[3].animations['flicker'] = {
 	},
 	frames: 4,
 	loop: true,
-	fps: 4
+	fps: 9
 };
 dungeontiles[3].defaultanimation = 'flicker';
 
@@ -65,24 +62,77 @@ redwizard.animations['idle'] = 	{
 	loop: true,
 	fps: 3
 };
+redwizard.animations['fire'] = 	{
+	0: (self) => {
+		self.sheetrow=0;
+		self.sheetcol+=2;
+	},
+	1: (self) => {
+		self.sheetrow++;
+	},
+	2: (self) => {
+		self.sheetrow--;
+	},
+	3: (self) => {
+		self.sheetrow++;
+	},
+	4: (self) => {
+		self.sheetrow--;
+	},
+	5: (self) => {
+		self.sheetrow++;
+	},
+	6: (self) => {
+		self.sheetrow--;
+	},
+	7: (self) => {
+		self.sheetrow=0;
+		self.sheetcol-=2;
+	},
+	frames: 8,
+	loop: false,
+	fps: 28
+}
 redwizard.defaultanimation = 'idle';
+
+// Projectiles
+var projectileconstructor = new Sprite('./sprites/Projectile.png', 0, 0, 100, 50);
+projectileconstructor.animations['idle'] = {
+	0: (self) => {
+		self.sheetcol++;
+	},
+	1: (self) => {
+		self.sheetcol++;
+	},
+	2: (self) => {
+		self.sheetcol++;
+	},
+	3: (self) => {
+		self.sheetcol = 0;
+	},
+	frames: 4,
+	loop: true,
+	fps: 14
+};
+projectileconstructor.defaultanimation = 'idle';
 
 // Create the Gate
 var gate = new Sprite('./sprites/Gate.png', 0, 165, 80, 320);
 
-// Initiates the Keys Used
-keyPressed('ArrowUp');
-keyPressed('ArrowDown');
-keyPressed('ArrowLeft');
-keyPressed('ArrowRight');
+var hplabel = new Sprite('./sprites/HP.png', 70, 14, 90, 48);
 
 // Basic Stats
 var health = 100;
 var level = 1;
+var projectiles = [];
 
 // Create Enemies
 var enemytypes = {};
-enemytypes['slime_blue'] = new Sprite('./sprites/Enemies.png', 800, 240, 80, 80);
+enemytypes['slime_blue'] = new Sprite('./sprites/Enemies.png', 800, 240, 80, 80, tags=['enemy']);
+enemytypes['slime_blue'].boxsize = {
+	x: 0, y: 20,
+	w: 80, h: 50
+};
 enemytypes['slime_blue'].animations['idle'] = {
 	0: (self) => {
 		self.sheetrow++;
@@ -96,8 +146,12 @@ enemytypes['slime_blue'].animations['idle'] = {
 };
 enemytypes['slime_blue'].defaultanimation = 'idle';
 
-enemytypes['snake_green'] = new Sprite('./sprites/Enemies.png', 800, 400, 80, 80);
+enemytypes['snake_green'] = new Sprite('./sprites/Enemies.png', 800, 400, 80, 80, tags=['enemy']);
 enemytypes['snake_green'].sheetcol = 1;
+enemytypes['snake_green'].boxsize = {
+	x: 0, y: 20,
+	w: 80, h: 45
+};
 enemytypes['snake_green'].animations['idle'] = {
 	0: (self) => {
 		self.sheetrow++;

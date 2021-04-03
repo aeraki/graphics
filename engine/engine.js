@@ -11,6 +11,7 @@ var TILESETDEBUGTOOL = false;
 
 var fpsaverage = 0;
 var countfps = 0;
+var updframe = 0;
 
 // Canvas Base Graphics
 function clear(color) {

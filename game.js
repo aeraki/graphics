@@ -11,28 +11,22 @@ function draw_game() {
 	clear();
 	CURRENTENVIRONMENT.draw();
 
-	// Draw Title Text
-	/*
-	CTX.strokeStyle = 'white';
-	CTX.lineWidth = 1;
-	CTX.font = '30px arial';
-	CTX.strokeText('Canvas Graphics & Collision Test', 5, 30);
-	CTX.strokeText('by Ben Aeraki', 5, 60);*/
-
 	// Draw Sprites
 	enemytypes['slime_blue'].draw();
 	enemytypes['snake_green'].draw();
 	redwizard.draw();
 	gate.draw();
 
+	for (let i=0; i<projectiles.length; i++) {
+		projectiles[i].draw();
+	};
+
 	// Healthbar
-	CTX.strokeStyle = '#333c57';
+	CTX.fillStyle = '#333c57';
+	CTX.fillRect(170, 33, 200, 12);
 	CTX.fillStyle = '#bc4258';
-	CTX.lineWidth = 5;
-	CTX.font = ' 30px Tahoma';
-	CTX.fillText('HEALTH: ', 30, 48);
-	CTX.fillRect(170, 22, 2*health, 30);
-	CTX.strokeRect(170, 22, 200, 30);
+	CTX.fillRect(170, 33, 2*health, 12);
+	hplabel.draw();
 
 	// Debug Tools
 	//keyboardDebugger(5, 5, color='white');
@@ -43,8 +37,30 @@ function draw_game() {
 function update_game() {
 
 	redwizard.keyboardMovement();
-	if (keyPressed('ArrowLeft')) { redwizard.sheetcol = 1 };
-	if (keyPressed('ArrowRight')) { redwizard.sheetcol = 0 };
+	if (redwizard.currentanimation==='idle') {
+		if (keyPressed('ArrowLeft')) { redwizard.sheetcol = 1 };
+		if (keyPressed('ArrowRight')) { redwizard.sheetcol = 0 };
+		
+		if (keyPressed('z')) {
+			redwizard.playAnimation('fire');
+			let n = copy(projectileconstructor);
+			let d = redwizard.sheetcol;
+			if (d === 1) { d = -1 } else { d = 1 };
+			n.direction = d;
+			n.x = redwizard.x + (40*d); n.y = redwizard.y + 20;
+			projectiles.push( n );
+		};
+	};
+
+	for (let i=0; i<projectiles.length; i++) {
+		let p = projectiles[i];
+		projectiles[i].x += (10*p.direction);
+		if (p.x > WIDTH || p.x < (0 - p.w)) {
+			projectiles.splice(i, 1);
+		};
+	};
+
+	for (let i=0; )
 
 };
 
