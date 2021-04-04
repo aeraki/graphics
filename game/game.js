@@ -37,6 +37,8 @@ function draw_game() {
 	//keyboardDebugger(5, 5, color='white');
 	showFps(color='#257179');
 
+	debugText(redwizard.currentanimation);
+
 };
 
 function update_game() {
@@ -54,6 +56,13 @@ function update_game() {
 			n.direction = d;
 			n.x = redwizard.x + (40*d); n.y = redwizard.y + 20;
 			projectiles.push( n );
+		};
+	};
+
+	if (keyPressed('q')) {
+		if (redwizard.currentanimation!=='hit') {
+			health -= 10;
+			redwizard.playAnimation('hit');
 		};
 	};
 

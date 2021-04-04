@@ -74,6 +74,11 @@ function keyboardDebugger(x, y, color='black') {
 		CTX.fillText(Object.keys(keyboard)[i], x, y+15+(20*i))
 	};
 };
+function debugText(text) {
+	CTX.font = '14px arial';
+	CTX.fillStyle = 'gray';
+	CTX.fillText(text, 10, 15);
+};
 
 // Draws FPS to bottom-left
 function showFps(color=black) {
