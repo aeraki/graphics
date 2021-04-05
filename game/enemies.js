@@ -4,7 +4,7 @@ var enemytypes = {};
 
 
 // Blue Slime
-enemytypes['slime_blue'] = new Sprite('./sprites/Enemies.png', 800, 240, 80, 80, tags=['enemy']);
+enemytypes['slime_blue'] = new Sprite('./sprites/Enemies.png', 1120, 240, 80, 80, tags=['enemy']);
 enemytypes['slime_blue'].movement = true;
 enemytypes['slime_blue'].boxsize = {
 	x: 0, y: 20,
@@ -29,7 +29,7 @@ enemytypes['slime_blue'].health = 2;
 
 
 // Green Snake
-enemytypes['snake_green'] = new Sprite('./sprites/Enemies.png', 800, 400, 80, 80, tags=['enemy']);
+enemytypes['snake_green'] = new Sprite('./sprites/Enemies.png', 1120, 400, 80, 80, tags=['enemy']);
 enemytypes['snake_green'].sheetcol = 1;
 enemytypes['snake_green'].movement = true;
 enemytypes['snake_green'].boxsize = {
@@ -49,14 +49,17 @@ enemytypes['snake_green'].animations['idle'] = {
 };
 enemytypes['snake_green'].defaultanimation = 'idle';
 enemytypes['snake_green'].speed = 4;
-enemytypes['snake_green'].maxhealth = 2;
-enemytypes['snake_green'].health = 2;
+enemytypes['snake_green'].maxhealth = 1;
+enemytypes['snake_green'].health = 1;
 
 
 
 // Draw Enemy Healthbar Function
-function proto_enemyHealthbar() {
-	console.log(this.image.src);
+function proto_enemyHealthbar() {;
+	CTX.fillStyle = '#1a1c2c';
+	CTX.fillRect(this.x, this.y+this.h, this.w, 15);
+	CTX.fillStyle = '#bc4258';
+	CTX.fillRect(this.x+3, this.y+this.h+3, (this.health/this.maxhealth)*(this.w-6), 9);
 };
 for (var id in enemytypes) {
 	enemytypes[id].drawHealth = proto_enemyHealthbar;

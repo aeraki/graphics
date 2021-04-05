@@ -8,6 +8,9 @@ var COLLISIONDEBUGTOOL = false;
 var COLLISIONSOLIDTAG = 'solid';
 // Tileset Debugging
 var TILESETDEBUGTOOL = false;
+// Animation Debugging
+var ANIMATIONDEBUGTOOL = false;
+var ANIMATIONSPRITENAME = 'redwizard';
 
 var fpsaverage = 0;
 var countfps = 0;

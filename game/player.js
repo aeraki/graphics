@@ -6,6 +6,7 @@ var projectiles = [];
 
 // Player Sprite
 var redwizard = new Sprite('./sprites/redwizard.png', 240, 320, 80, 80);
+redwizard.name = 'redwizard';
 redwizard.speed = 6;
 redwizard.movement = true;
 redwizard.boxsize = {
@@ -14,10 +15,11 @@ redwizard.boxsize = {
 };
 redwizard.animations['idle'] = 	{
 	0: (self) => {
-		self.sheetrow++;
+		self.sheetcol=0;
+		self.sheetrow=0;
 	},
 	1: (self) => {
-		self.sheetrow--;
+		self.sheetrow=1;
 	},
 	frames: 2,
 	loop: true,
@@ -26,7 +28,7 @@ redwizard.animations['idle'] = 	{
 redwizard.animations['fire'] = {
 	0: (self) => {
 		self.sheetrow=0;
-		self.sheetcol+=2;
+		self.sheetcol=2;
 	},
 	1: (self) => {
 		self.sheetrow++;
@@ -46,26 +48,29 @@ redwizard.animations['fire'] = {
 	6: (self) => {
 		self.sheetrow--;
 	},
-	7: (self) => {
-		self.sheetrow=0;
-		self.sheetcol-=2;
-	},
-	frames: 8,
+	frames: 7,
 	loop: false,
 	fps: 28
 };
 redwizard.animations['hit'] = {
 	0: (self) => {
 		self.sheetrow=0;
-		self.sheetcol+=4;
+		self.sheetcol=4;
 	},
-	1: (self) => {
-		self.sheetrow=0;
-		self.sheetcol-=4;
-	},
-	frames: 2,
+	1: (self) => { self.sheetrow++ },
+	2: (self) => { self.sheetrow-- },
+	3: (self) => { self.sheetrow++ },
+	4: (self) => { self.sheetrow-- },
+	5: (self) => { self.sheetrow++ },
+	6: (self) => { self.sheetrow-- },
+	7: (self) => { self.sheetrow++ },
+	8: (self) => { self.sheetrow-- },
+	9: (self) => { self.sheetrow++ },
+	10: (self) => { self.sheetrow-- },
+	11: (self) => { self.sheetrow++ },
+	12: (self) => { self.sheetrow-- },
+	frames: 13,
 	loop: false,
-	fps: 5
+	fps: 15
 };
 redwizard.defaultanimation = 'idle';
-redwizard.hiton = true;

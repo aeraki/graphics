@@ -19,18 +19,15 @@ dungeontiles[3].tags = ['solid'];
 
 dungeontiles[3].animations['flicker'] = {
 	0: (self) => {
-		self.sheetrow++;
+		self.sheetrow=0;
 	},
 	1: (self) => {
-		self.sheetrow++;
+		self.sheetrow=1;
 	},
 	2: (self) => {
-		self.sheetrow--;
+		self.sheetrow=2;
 	},
-	3: (self) => {
-		self.sheetrow--;
-	},
-	frames: 4,
+	frames: 3,
 	loop: true,
 	fps: 9
 };

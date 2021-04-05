@@ -1,11 +1,10 @@
-function draw_title() {
+// Other Views
+// - Title Screen
+// - Game Over
 
-};
 
-function update_title() {
 
-};
-
+// Draw the Screen at the refresh rate of the browser
 function draw_game() {
 	// Draw Environment
 	clear();
@@ -14,6 +13,7 @@ function draw_game() {
 	// Draw Enemies
 	for (let i=0; i<enemiesactive.length; i++) {
 		enemiesactive[i].draw();
+		enemiesactive[i].drawHealth();
 	};
 
 	// Draw Sprites
@@ -41,39 +41,54 @@ function draw_game() {
 
 };
 
+// Update the game 60 times a second
 function update_game() {
 
+	// Keyboard Movement - Player
 	redwizard.keyboardMovement();
-	if (redwizard.currentanimation==='idle') {
-		if (keyPressed('ArrowLeft')) { redwizard.sheetcol = 1 };
-		if (keyPressed('ArrowRight')) { redwizard.sheetcol = 0 };
-		
-		if (keyPressed('z')) {
-			redwizard.playAnimation('fire');
-			let n = copy(projectileconstructor);
-			let d = redwizard.sheetcol;
-			if (d === 1) { d = -1 } else { d = 1 };
-			n.direction = d;
-			n.x = redwizard.x + (40*d); n.y = redwizard.y + 20;
-			projectiles.push( n );
-		};
+
+	// Change Direction Facing
+	if (keyPressed('ArrowLeft')) {
+		redwizard.offsetcol = 1;
+	};
+	if (keyPressed('ArrowRight')) {
+		redwizard.offsetcol = 0;
 	};
 
-	if (keyPressed('q')) {
-		if (redwizard.currentanimation!=='hit') {
+	// Fire Projectile
+	if (redwizard.currentanimation==='idle' && keyPressed('z')) {
+		redwizard.playAnimation('fire');
+		let n = copy(projectileconstructor);
+		let d = redwizard.offsetcol;
+		if (d === 1) { d = -1 } else { d = 1 };
+		n.direction = d;
+		n.x = redwizard.x + (40*d); n.y = redwizard.y + 20;
+		projectiles.push( n );
+	};
+
+	if (redwizard.currentanimation!=='hit' && redwizard.collisionWithTag('enemy', scope=enemiesactive)) {
 			health -= 10;
 			redwizard.playAnimation('hit');
-		};
 	};
 
+	// Update Projectiles
 	for (let i=0; i<projectiles.length; i++) {
 		let p = projectiles[i];
 		projectiles[i].x += (10*p.direction);
 		if (p.x > WIDTH || p.x < (0 - p.w)) {
 			projectiles.splice(i, 1);
 		};
+		let enemyhit = p.collisionWithTag('enemy', scope=enemiesactive);
+		if (enemyhit) {
+			enemyhit.health-=1;
+			if (enemyhit.health === 0) {
+				enemiesactive.splice(enemiesactive.indexOf(enemyhit), 1);
+			};
+			projectiles.splice(i, 1);
+		};
 	};
 
+	// Update Enemies
 	for (let i=0; i<enemiesactive.length; i++) {
 		for (let s=0; s<enemiesactive[i].speed; s++) {
 			enemiesactive[i].moveDirection(-1, 0);
@@ -83,11 +98,10 @@ function update_game() {
 };
 
 // Startup Enemies
-
 enemiesactive = [
 	copy( enemytypes.slime_blue ),
 	copy( enemytypes.snake_green )
-]
+];
 
 // Start Game
 _update = update_game;

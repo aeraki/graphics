@@ -19,6 +19,8 @@ function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 	// Spritesheet
 	this.sheetrow = sheetrow;
 	this.sheetcol = sheetcol;
+	this.offsetrow = 0;
+	this.offsetcol = 0;
 
 	// Collision Box
 	this.boxsize = {
@@ -31,12 +33,19 @@ function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 
 	// Draw Sprite on Canvas
 	this.draw = function() {
-		CTX.drawImage(this.image, this.sheetrow*this.w, this.sheetcol*this.h, this.w, this.h, this.x, this.y, this.w, this.h);
+		
+		// Draws to Canvas
+		CTX.drawImage(this.image, (this.sheetrow+this.offsetrow)*this.w, (this.sheetcol+this.offsetcol)*this.h, 
+		this.w, this.h, this.x, this.y, this.w, this.h);
+
+		// Draws Debug Tool
 		if (COLLISIONDEBUGTOOL) {
 			CTX.fillStyle = 'rgb(255,0,0,0.20)';
 			if (this.tags.includes(COLLISIONSOLIDTAG)) {CTX.fillStyle = 'rgb(0,255,0,0.20)';};
 			CTX.fillRect(this.boxsize.x+this.x, this.boxsize.y+this.y, this.boxsize.w, this.boxsize.h);
 		};
+
+		// Starts Default Animation of no animation playing.
 		if (this.currentanimation === undefined && this.defaultanimation !== undefined) {
 			this.playAnimation(this.defaultanimation);
 		};
@@ -60,26 +69,25 @@ function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 				return true
 		} else { return false };
 	};
-	this.collisionWithTag = function(tag, scope=CURRENTENVIRONMENT) {
-		let objects = scope.objects;
-		let res = false;
+	this.collisionWithTag = function(tag, scope=CURRENTENVIRONMENT.objects) {
+		let objects = scope;
 		for (let i=0; i<objects.length; i++) {
 			if (objects[i].type === 'Sprite') {
 
-				if (objects[i].tags.includes(tag) && this.collisionWithSprite(objects[i])) { res=true };
+				if (objects[i].tags.includes(tag) && this.collisionWithSprite(objects[i])) { return objects[i] };
 
 			} else if (objects[i].type === 'TileMap') {
 				for (let ty=0; ty<objects[i].manifest.length; ty++) {
 					for (let tx=0; tx<objects[i].manifest[ty].length; tx++) {
 
 						let spr = objects[i].manifest[ty][tx];
-						if (spr.tags.includes(tag) && this.collisionWithSprite(spr)) { res=true };
+						if (spr.tags.includes(tag) && this.collisionWithSprite(spr)) { return spr };
 
 					};
 				};
 			};
 		};
-		return res;
+		return false;
 	};
 
 
@@ -120,19 +128,7 @@ function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 	};
 
 	// Animations
-	this.animations = {
-		/*'default': {
-			frames: 2,
-			0: () => {
-				this.sheetrow++;
-			},
-			1: () => {
-				this.sheetrow--;
-			},
-			loop: true,
-			fps: 3
-		}*/
-	};
+	this.animations = {};
 	
 	this.currentanimation = undefined;
 	this.defaultanimation = undefined;
@@ -143,33 +139,57 @@ function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 	this.playAnimation = function (id) {
 		//console.log('Played Animation: ' + id);
 
+		// Cancel if the animation is already playing.
 		if (this.currentanimation === id) {
 			return false;
 		};
 
+		// Removes the Previous Animation
 		clearInterval(this.animationplayer);
+
+		// Updates the Animation Variables
 		this.currentanimation = id;
-		this.animationframe = 0;
+		this.animationframe = 1;
+
+		// Runs the first frame in advance
+		this.animations[ this.currentanimation ][0](this);
+		if (ANIMATIONDEBUGTOOL && this.name === ANIMATIONSPRITENAME) {
+			console.log('Frame: -1; Row: '+this.sheetrow+'; Col: '+this.sheetcol+';');
+		};
 
 		this.animationplayer = setInterval((
+			// Run this at the fps of the animation
 			function(self) { return function() {
+				// Gets the animation from the sprite.
 				let ani = self.animations[ self.currentanimation ];
+				// Runs the animation function
 				ani[ self.animationframe ](self);
-				if (self.secretval === 'redwizard') {
-					console.log('Row: '+self.sheetrow+'; Col: '+self.sheetcol+'; Loop: '+ani.loop);
+				
+				// If debuging is on, show frame data.
+				if (ANIMATIONDEBUGTOOL && self.name === ANIMATIONSPRITENAME) {
+					console.log('Frame: '+self.animationframe+'; Row: '+self.sheetrow+'; Col: '+self.sheetcol+'; Loop: '+ani.loop);
 				};
+				// Add one to the frame.
 				self.animationframe++;
 
-				if (self.animationframe >= ani.frames) {
+				// If the animation is finished
+				if (self.animationframe === ani.frames) {
+					// Loop the animation
 					if (ani.loop === true) {
-						self.animationframe = 0 
+						self.animationframe = 0;
+					// End the animation
 					} else {
 						self.currentanimation = undefined;
 						clearInterval(self.animationplayer);
 					};
 				};
-			}
+			};
 		})(this) , 1000/this.animations[id].fps);
+	};
+
+	this.stopAnimation = function () {
+		this.currentanimation = undefined;
+		clearInterval(this.animationplayer);
 	};
 
 
