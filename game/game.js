@@ -2,8 +2,6 @@
 // - Title Screen
 // - Game Over
 
-
-
 // Draw the Screen at the refresh rate of the browser
 function draw_game() {
 	// Draw Environment
@@ -66,7 +64,8 @@ function update_game() {
 		projectiles.push( n );
 	};
 
-	if (redwizard.currentanimation!=='hit' && redwizard.collisionWithTag('enemy', scope=enemiesactive)) {
+	if (redwizard.currentanimation!=='hit' && 
+		redwizard.collisionWithTag('enemy', scope=enemiesactive, box=redwizard.damagebox)) {
 			health -= 10;
 			redwizard.playAnimation('hit');
 	};
@@ -104,5 +103,9 @@ enemiesactive = [
 ];
 
 // Start Game
-_update = update_game;
-_draw = draw_game;
+_update = update_title//update_game;
+_draw = draw_title//draw_game;
+
+if (!navigator.userAgent.includes('Chrome')) {
+	alert('Warning! This game runs best using Google Chrome.')
+};

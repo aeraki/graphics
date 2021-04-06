@@ -13,6 +13,10 @@ function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 	this.w = w;
 	this.h = h;
 
+	// Draw Width
+	this.dw = w;
+	this.dh = h;
+
 	// Tags
 	this.tags = tags;
 
@@ -36,7 +40,7 @@ function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 		
 		// Draws to Canvas
 		CTX.drawImage(this.image, (this.sheetrow+this.offsetrow)*this.w, (this.sheetcol+this.offsetcol)*this.h, 
-		this.w, this.h, this.x, this.y, this.w, this.h);
+		this.w, this.h, this.x, this.y, this.dw, this.dh);
 
 		// Draws Debug Tool
 		if (COLLISIONDEBUGTOOL) {
@@ -59,8 +63,8 @@ function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 			w: box.w, h: box.h
 		};
 	};
-	this.collisionWithSprite = function (spr) {
-		let one = this.collisionBox();
+	this.collisionWithSprite = function (spr, box=this.boxsize) {
+		let one = this.collisionBox(box=box);
 		let two = spr.collisionBox();
 		if (one.x < two.x + two.w &&
 			one.x + one.w > two.x &&
@@ -69,12 +73,12 @@ function Sprite(src, x, y, w, h, tags=[], sheetrow=0, sheetcol=0) {
 				return true
 		} else { return false };
 	};
-	this.collisionWithTag = function(tag, scope=CURRENTENVIRONMENT.objects) {
+	this.collisionWithTag = function(tag, scope=CURRENTENVIRONMENT.objects, box=this.boxsize) {
 		let objects = scope;
 		for (let i=0; i<objects.length; i++) {
 			if (objects[i].type === 'Sprite') {
 
-				if (objects[i].tags.includes(tag) && this.collisionWithSprite(objects[i])) { return objects[i] };
+				if (objects[i].tags.includes(tag) && this.collisionWithSprite(objects[i], box=box)) { return objects[i] };
 
 			} else if (objects[i].type === 'TileMap') {
 				for (let ty=0; ty<objects[i].manifest.length; ty++) {

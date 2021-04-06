@@ -75,3 +75,7 @@ projectileconstructor.defaultanimation = 'idle';
 var gate = new Sprite('./sprites/Gate.png', 0, 165, 80, 320);
 
 var hplabel = new Sprite('./sprites/HP.png', 70, 14, 90, 48);
+
+var titlelogo = new Sprite('./sprites/title.png', 172, 80, 998, 424);
+titlelogo.dw=titlelogo.dw/1.3;
+titlelogo.dh=titlelogo.dh/1.3;

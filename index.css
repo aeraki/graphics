@@ -10,3 +10,8 @@ body {
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
+
+@font-face {
+	font-family: TIC;
+	src: url(./font/tic-80-wide-font.ttf);
+}

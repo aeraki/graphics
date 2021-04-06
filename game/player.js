@@ -13,6 +13,10 @@ redwizard.boxsize = {
 	x: 10, y: 50,
 	w: 60, h: 30
 };
+redwizard.damagebox = {
+	x: 10, y: 10,
+	w: 60, h: 60
+};
 redwizard.animations['idle'] = 	{
 	0: (self) => {
 		self.sheetcol=0;
