@@ -20,6 +20,7 @@ function draw_game() {
 
 
 	// Healthbar
+	rect2(170,33,200,12,'#1a1c2c',10);
 	CTX.fillStyle = '#333c57';
 	CTX.fillRect(170, 33, 200, 12);
 	CTX.fillStyle = '#bc4258';
@@ -45,6 +46,14 @@ function update_game() {
 	};
 	if (keyPressed('ArrowRight')) {
 		redwizard.offsetcol = 0;
+	};
+
+	if (keyPressed('Escape')) {
+		_update = update_levelsel;
+		_draw = draw_levelsel;
+		enemiesactive = [];
+		health = maxhealth;
+		projectiles = [];
 	};
 
 	// Fire Projectile
@@ -88,13 +97,13 @@ function update_game() {
 		};
 	};
 
-};
+	if (currentlevel === 0 && updframe%30===0) {
+		let n = copy(enemytypes['practice_slime']);
+		n.y = Math.floor(Math.random() * 161)+240;
+		enemiesactive.push( n );
+	};
 
-// Startup Enemies
-enemiesactive = [
-	copy( enemytypes.slime_blue ),
-	copy( enemytypes.snake_green )
-];
+};
 
 // Start Game
 _update = update_title//update_game;

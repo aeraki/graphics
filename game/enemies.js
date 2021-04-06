@@ -64,3 +64,12 @@ function proto_enemyHealthbar() {;
 for (var id in enemytypes) {
 	enemytypes[id].drawHealth = proto_enemyHealthbar;
 };
+
+
+// Practice Slime
+enemytypes['practice_slime'] = copy(enemytypes['slime_blue']);
+enemytypes['practice_slime'].sheetcol+=2;
+enemytypes['practice_slime'].speed = 5;
+enemytypes['practice_slime'].maxhealth = 1;
+enemytypes['practice_slime'].health = 1;
+enemytypes['practice_slime'].drawHealth = function () {};

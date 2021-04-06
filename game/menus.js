@@ -28,21 +28,24 @@ function update_title() {
 
 
 
+
+
+
 // Level Select
 
-var levelselected = 0;
+var currentlevel = 0;
 var buttoncooldown = 0;
 
 function draw_levelsel() {
 
-	let lev = levels[levelselected];
+	let lev = levels[currentlevel];
 
 	clear('#1a1c2c');
 	lev.scene.draw();
 	clear('#1a1c2cbb');
 
-	if (levelselected !== 0) {
-		levelrectangle(levelselected-1,-20);
+	if (currentlevel !== 0) {
+		levelrectangle(currentlevel-1,-20);
 	};
 
 	
@@ -51,8 +54,8 @@ function draw_levelsel() {
 	drawtext(lev.name,80,175,'#f4f4f4','26px TIC');
 	drawtext('High Score: '+lev.hiscore, 100,215,'#566c86');
 
-	for (let i=levelselected+1; i<levels.length; i++) {
-		levelrectangle(i,280+((i-1-levelselected) * 130));
+	for (let i=currentlevel+1; i<levels.length; i++) {
+		levelrectangle(i,280+((i-1-currentlevel) * 130));
 	};
 };
 
@@ -60,22 +63,29 @@ function update_levelsel() {
 
 	// Navigate Levels
 	if (buttoncooldown === 0) {
-		if (keyPressed('ArrowUp') && levelselected !== 0) {
-			levelselected--;
+		if (keyPressed('ArrowUp') && currentlevel !== 0) {
+			currentlevel--;
 			buttoncooldown=10;
 		};
-		if (keyPressed('ArrowDown') && levelselected < levels.length-1) {
-			levelselected++;
+		if (keyPressed('ArrowDown') && currentlevel < levels.length-1) {
+			currentlevel++;
 			buttoncooldown=10;
 		};
 	};
 
-	// Select Level
+	// Select & Load Level
 	if (keyPressed('z')) {
-		if (levelselected === 0) {
+		if (currentlevel !== 2) {
 			_update = update_game;
 			_draw = draw_game;
+			CURRENTENVIRONMENT = levels[currentlevel].scene;
 		};
+		if (currentlevel === 1) {
+			enemiesactive = [
+				copy( enemytypes.slime_blue ),
+				copy( enemytypes.snake_green )
+			];
+		}
 	};
 
 	// Button Cooldown

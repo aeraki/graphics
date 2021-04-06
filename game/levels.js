@@ -1,6 +1,10 @@
 // Level Outline
 var levels = [
-	// Level 1
+	{
+		name: 'Practice Range',
+		scene: PracticeRange,
+		hiscore: 0
+	},
 	{
 		name: 'Tutorial Battle',
 		scene: Scene1,
