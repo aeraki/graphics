@@ -3,13 +3,7 @@ changeCanvasSize(14*80, 8*80);
 
 var enemiesactive = [];
 
-// Level Outline
-var levels = [
-	// Level 1
-	{
-		enemies: []
-	}
-];
+var gate = new Sprite('./sprites/Gate.png', 0, 165, 80, 320);
 
 // Tileset, with 2 Tiles Solid
 var dungeontiles = new Tileset('./sprites/Tiles.png', 80, 80, 3, 2);
@@ -44,7 +38,8 @@ var Scene1 = new Environment([
 		[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
 		[0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
 		[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-	])//,
+	]),
+	gate
 	//new Sprite('./sprites/block.png', 400, 400, 80, 80, tags=['solid'])
 ], backgroundColor='#333c57');
 
@@ -70,9 +65,6 @@ projectileconstructor.animations['idle'] = {
 	fps: 14
 };
 projectileconstructor.defaultanimation = 'idle';
-
-// Create the Gate
-var gate = new Sprite('./sprites/Gate.png', 0, 165, 80, 320);
 
 var hplabel = new Sprite('./sprites/HP.png', 70, 14, 90, 48);
 

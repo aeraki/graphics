@@ -1,7 +1,3 @@
-// Other Views
-// - Title Screen
-// - Game Over
-
 // Draw the Screen at the refresh rate of the browser
 function draw_game() {
 	// Draw Environment
@@ -16,7 +12,6 @@ function draw_game() {
 
 	// Draw Sprites
 	redwizard.draw();
-	gate.draw();
 
 	// Draw Projectiles
 	for (let i=0; i<projectiles.length; i++) {
@@ -33,9 +28,8 @@ function draw_game() {
 
 	// Debug Tools
 	//keyboardDebugger(5, 5, color='white');
-	showFps(color='#257179');
-
-	debugText(redwizard.currentanimation);
+	//showFps(color='#257179');
+	//debugText(redwizard.currentanimation);
 
 };
 
