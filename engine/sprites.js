@@ -62,7 +62,11 @@ class Sprite {
 		return this;
 	};
 	init() {
-		keyboard.addEvent('ArrowRight', ()=>{ this.x += 10 });
+							// TEMP CODE FOR MOVEMENT
+								keyboard.addHeldEvent('ArrowRight', ()=>{ this.x += 6 });
+								keyboard.addHeldEvent('ArrowLeft',  ()=>{ this.x -= 6 });
+								keyboard.addHeldEvent('ArrowUp',    ()=>{ this.y -= 6 });
+								keyboard.addHeldEvent('ArrowDown',  ()=>{ this.y += 6 });
 		return this;
 	};
 

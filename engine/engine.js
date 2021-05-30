@@ -9,6 +9,13 @@ var CURRENTSCENE;
 var fpsaverage = 0;
 var countfps = 0;
 var updframe = 0;
+var updfps = 60;
+
+// Count FPS
+setInterval(function() {
+	fpsaverage = countfps;
+	countfps = 0;
+}, 1000);
 
 // Canvas Base Graphics
 function clear(color) {
@@ -77,7 +84,18 @@ setInterval( function() { // Loops 60x a second;
 	// Checks for update to exist;
 	if (UPDATE !== undefined) {UPDATE()};
 	if (CURRENTSCENE) {CURRENTSCENE.PROTOTYPE_UPDATE()};
+
+	// Runs Held Keyboard Events;
+	keyboard.held.forEach( (k) => {
+		// For every expected key held;
+		// Look for events with matching keys.
+		keyboard.heldEvents.forEach( (e) => {
+			if (e.keys.includes(k)) { e.event()	};
+		});
+
+	});
+
 	// Adds to update frame count;
 	updframe++;
 	if(updframe>999){updframe=0};
-}, 1000/60);
+}, 1000/updfps);

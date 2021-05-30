@@ -60,8 +60,8 @@ class Scene {
 			obj.scene = this;
 		});
 
-		// Reset the Keyboard Event System;
-		keyboard.events = [];
+		// Reset and Add to the Keyboard Event System;
+		keyboard.clearEvents();
 		this.keyEvents.forEach( (e) => { keyboard.events.push(e) });
 
 		// Initialize Scene
