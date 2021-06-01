@@ -3,6 +3,7 @@ document.addEventListener('keydown', function(event) {
 	// Runs Regular Keyboard Events;
 	keyboard.events.forEach( (e) => {
 		if (e.keys.includes( event.key )) {
+			event.preventDefault();
 			e.event();
 		};
 	});

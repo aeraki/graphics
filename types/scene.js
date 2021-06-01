@@ -70,16 +70,37 @@ class Scene {
 		return this;
 	};
 
+	// Adds Object to Scene;
+	addObject(list) {
+		if (!Array.isArray(list)) { list = [list] };
+		list.forEach( (obj) => {
+			obj.scene = this;
+			if (obj.init) {obj.init()};
+			this.objects.push(obj);
+		});
+		return this;
+	};
+
 	// Adds Scene-Level Keyboard Events;
 	addKeyEvent(keys, event) {
 		// If a single key is given, convert to Array;
 		if (typeof keys === 'string') { keys = [keys] };
-		// Add events to eventlist;
-		this.keyEvents.push({
+
+		let e = {
 			'keys': keys,
 			'event': event
-		});
+		};
+
+		// Add events to eventlist;
+		this.keyEvents.push(e);
+
+		// If this is the current scene,
+			// Add the event to the global event list.
+		if (this === CURRENTSCENE) {
+			keyboard.events.push(e);
+		};
+
 		return this;
-	}
+	};
 
 };

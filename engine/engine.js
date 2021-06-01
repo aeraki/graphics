@@ -17,38 +17,22 @@ setInterval(function() {
 	countfps = 0;
 }, 1000);
 
-// Canvas Base Graphics
-function clear(color) {
-	// If no color provided, clear as transparent;
-	if (color === undefined) {
-		CTX.clearRect(0, 0, WIDTH, HEIGHT);
-	} else {
-		CTX.fillStyle = color;
-		CTX.fillRect(0, 0, WIDTH, HEIGHT);
-	};
+// Defaults;
+var DEFAULTS = {
+	keyboard: {
+		moveUp: ['ArrowUp', 'w'],
+		moveLeft: ['ArrowLeft', 'a'],
+		moveDown: ['ArrowDown', 's'],
+		moveRight: ['ArrowRight', 'd']
+	},
+	solidtags: ['solid']
 };
-function line(x1, y1, x2, y2, color, width=2) {
-	CTX.strokeStyle = color;
-	CTX.lineWidth = width;
-	CTX.beginPath();
-	CTX.moveTo(x1, y1);
-	CTX.lineTo(x2, y2);
-	CTX.stroke();
-};
-function drawtext(text,x,y,color,font) {
-	if (color) {CTX.fillStyle = color};
-	if (font) {CTX.font = font};
-	CTX.fillText(text,x,y);
-};
-function rectFill(x,y,w,h,color) {
-	if (color) {CTX.fillStyle = color};
-	CTX.fillRect(x,y,w,h);
-};
-function rectStroke(x,y,w,h,color,thickness) {
-	if (color) {CTX.strokeStyle = color};
-	if (thickness) {CTX.lineWidth = thickness};
-	CTX.strokeRect(x,y,w,h);
-};
+DEFAULTS.keymap = [
+	{keys: DEFAULTS.keyboard.moveUp, x:0, y:-1},
+	{keys: DEFAULTS.keyboard.moveLeft, x:-1, y:0},
+	{keys: DEFAULTS.keyboard.moveDown, x:0, y:1},
+	{keys: DEFAULTS.keyboard.moveRight, x:1, y:0},
+]
 
 // Change Canvas Size
 function changeCanvasSize(w, h) {
@@ -58,9 +42,31 @@ function changeCanvasSize(w, h) {
 	HEIGHT = CANVAS.height = h;
 };
 
+// Random Function;
+function random(a,b) {
+
+	// Random Number - Max Only;
+		// Return a number from 0 to A;
+	if (typeof a === 'number' && b === undefined) {
+		return Math.floor(Math.random() * (a+1));
+	};
+
+	// Random Number - Min and Max;
+		// Returns a number from A to B;
+	if (typeof a === 'number' && typeof b === 'number') {
+		return Math.floor(Math.random() * (b+1 - a) + a);
+	};
+
+	// Random from Array;
+	if (Array.isArray(a) && b === undefined) {
+		return a[random(a.length-1)];
+	};
+
+};
+
 // Copy Objects because F&ck pointers.
 function copyOf(obj) {
-	var a = {};
+	var a = Object.create(Object.getPrototypeOf(obj));
 	for (var x in obj) a[x] = obj[x];
 	return a;
 };
